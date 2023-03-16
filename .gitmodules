@@ -1,3 +1,6 @@
 [submodule "CDYelpFusionKit"]
 	path = CDYelpFusionKit
 	url = https://github.com/chrisdhaan/CDYelpFusionKit.git
+[submodule "Alamofire"]
+	path = Alamofire
+	url = https://github.com/Alamofire/Alamofire.git

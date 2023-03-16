@@ -7,12 +7,13 @@
 
 import UIKit
 import CoreLocation
-//import CDYelpFusionKit
+import CDYelpFusionKit
 
 class HomeViewController: UIViewController, ZipCodeDelegate, CLLocationManagerDelegate {
 
     @IBOutlet weak var restaurantImageView: UIImageView!
     @IBOutlet weak var restaurantNameLabel: UILabel!
+    @IBOutlet weak var foodTypeLabel : UILabel!
     
     @IBOutlet weak var zipCodeButton: UIButton!
     @IBOutlet weak var nearestRestaurantButton: UIButton!
@@ -23,9 +24,13 @@ class HomeViewController: UIViewController, ZipCodeDelegate, CLLocationManagerDe
     let locationManager = CLLocationManager()
 
     
-//    private var restaurants: [CDYelpBusiness.BusinessSearch] = []
+    private var restaurants: [CDYelpBusiness.BusinessSearch] = []
+    private var likedRestaurants: [CDYelpBusiness.BusinessSearch] = []
     private var currentIndex = 0
     private var currentZip = "0"
+    
+    let apiClient = CDYelpAPIClient(apiKey: YelpAPIConfig.apiKey)
+    
     
     
     override func viewDidLoad() {
@@ -37,11 +42,8 @@ class HomeViewController: UIViewController, ZipCodeDelegate, CLLocationManagerDe
         locationManager.startUpdatingLocation()
         
         
-        
         title = "Home"
         view.backgroundColor = UIColor.systemBackground
-
-
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -50,32 +52,31 @@ class HomeViewController: UIViewController, ZipCodeDelegate, CLLocationManagerDe
 
     }
     
-//    func loadRestaurants(_ zipcode:String) {
-//        let apiClient = CDYelpAPIClient(apiKey: YelpAPIConfig.apiKey)
-//        apiClient.searchBusinesses(byTerm: "restaurants",
-//                                    location: zipcode,
-//                                    latitude: nil,
-//                                    longitude: nil,
-//                                    radius: 80000,
-//                                    categories: nil,
-//                                    locale: .english_unitedStates,
-//                                    limit: 50,
-//                                    offset: 0,
-//                                    sortBy: .bestMatch,
-//                                    priceTiers: nil,
-//                                    openNow: nil,
-//                                    openAt: nil,
-//                                    attributes: nil) { (response) in
-//            if let response = response,
-//               let businesses = response.businesses {
-//                self.restaurants = businesses
-//                print(self.restaurants)
-//                DispatchQueue.main.async {
-//                    self.displayRestaurant()
-//                }
-//            }
-//        }
-//    }
+    func loadRestaurants(_ zipcode:String) {
+       
+        apiClient.searchBusinesses(byTerm: "Food",
+                                    location: zipcode,
+                                    latitude: nil,
+                                    longitude: nil,
+                                    radius: 40000,
+                                    categories: nil,
+                                    locale: .english_unitedStates,
+                                    limit: 50,
+                                    offset: 0,
+                                    sortBy: .bestMatch,
+                                    priceTiers: nil,
+                                    openNow: nil,
+                                    openAt: nil,
+                                    attributes: nil) { (response) in
+            if let response = response,
+               let businesses = response.businesses {
+                self.restaurants = businesses
+                DispatchQueue.main.async {
+                    self.displayRestaurant()
+                }
+            }
+        }
+    }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
@@ -100,6 +101,8 @@ class HomeViewController: UIViewController, ZipCodeDelegate, CLLocationManagerDe
 
             if let placemark = placemarks?.first, let postalCode = placemark.postalCode {
                 self.currentZip = postalCode
+                self.loadRestaurants(postalCode)
+
             }
         }
         if let initialZipCode = UserDefaults.standard.string(forKey: "initialZipCode") {
@@ -108,31 +111,73 @@ class HomeViewController: UIViewController, ZipCodeDelegate, CLLocationManagerDe
     }
 
     
-//    func displayRestaurant() {
-//        let restaurant = restaurants[currentIndex]
-//        restaurantNameLabel.text = restaurant.name
-//        // Load the image from the imageURL and display it in the restaurantImageView
-//    }
+    func displayRestaurant() {
+        let restaurant = restaurants[currentIndex]
+        print(restaurant)
+        restaurantNameLabel.text = restaurant.name
+        if let foodTypeStr = restaurant.categories?[0].title{
+            foodTypeLabel.text = "Food Type: " + foodTypeStr
+        }
+        // Load the image from the imageURL and display it in the restaurantImageView
+        if let imgStr = restaurant.imageUrl{
+            let imgURL = URL(string: imgStr)
+            if let unwrappedImgURL = imgURL{
+                let session = URLSession(configuration: .default)
+                let downloadPicTask = session.dataTask(with: unwrappedImgURL) { (data, response, error) in
+                    // The download has finished.
+                    if let e = error {
+                        print("Error downloading cat picture: \(e)")
+                    } else {
+                        // No errors found.
+                        // It would be weird if we didn't have a response, so check for that too.
+                        if let res = response as? HTTPURLResponse {
+                            print("Downloaded cat picture with response code \(res.statusCode)")
+                            if let imageData = data {
+                                // Finally convert that Data into an image and do what you wish with it.
+                                // Do something with your image.
+                                DispatchQueue.main.async {
+                                    let image = UIImage(data: imageData)
+                                    self.restaurantImageView.image = image
+                                }
+                            } else {
+                                print("Couldn't get image: Image is nil")
+                            }
+                        } else {
+                            print("Couldn't get response code for some reason")
+                        }
+                    }
+                }
+                
+                downloadPicTask.resume()
+            }
+        }
+    }
 
     @IBAction func likeButtonTapped(_ sender: UIButton) {
         // Add the current restaurant to the list of liked restaurants
+        likedRestaurants.append(restaurants[currentIndex])
+        
         // Increment currentIndex and display the next restaurant
+        currentIndex = currentIndex + 1
+        
+        displayRestaurant()
     }
     
     @IBAction func dislikeButtonTapped(_ sender: UIButton) {
         // Increment currentIndex and display the next restaurant
+        currentIndex = currentIndex + 1
+        
+        displayRestaurant()
     }
     
-    @IBAction func unwindFromZipCode(_ unwindSegue: UIStoryboardSegue) {
-        // Perform any additional actions needed when returning from ZipCodeViewController
-    }
     
     func didUpdateZipCode(zipCode: String) {
-        // Handle the updated zip code, e.g., update the list of restaurants
+        // Handle the updated zip code
         // based on the new zip code and reload the home screen
+        restaurantNameLabel.text = "Loading new location..."
         
-        print(zipCode)
-        restaurantNameLabel.text = zipCode
+        // Update the list of restaurants
+        loadRestaurants(zipCode)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
