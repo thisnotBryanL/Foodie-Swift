@@ -248,8 +248,8 @@
 			projectRoot = "";
 			targets = (
 				3F3D0AAF29C2B6F90019D081 /* Foodie */,
-				3F3D0AC529C2B6FC0019D081 /* FoodieTests */,
 				3F3D0ACF29C2B6FC0019D081 /* FoodieUITests */,
+				3F3D0AC529C2B6FC0019D081 /* FoodieTests */,
 			);
 		};
 /* End PBXProject section */

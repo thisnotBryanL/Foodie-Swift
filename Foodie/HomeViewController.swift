@@ -7,7 +7,7 @@
 
 import UIKit
 import CoreLocation
-import CDYelpFusionKit
+//import CDYelpFusionKit
 
 class HomeViewController: UIViewController, ZipCodeDelegate, CLLocationManagerDelegate {
 
@@ -23,7 +23,7 @@ class HomeViewController: UIViewController, ZipCodeDelegate, CLLocationManagerDe
     let locationManager = CLLocationManager()
 
     
-    private var restaurants: [CDYelpBusiness.BusinessSearch] = []
+//    private var restaurants: [CDYelpBusiness.BusinessSearch] = []
     private var currentIndex = 0
     private var currentZip = "0"
     
@@ -50,32 +50,32 @@ class HomeViewController: UIViewController, ZipCodeDelegate, CLLocationManagerDe
 
     }
     
-    func loadRestaurants(_ zipcode:String) {
-        let apiClient = CDYelpAPIClient(apiKey: YelpAPIConfig.apiKey)
-        apiClient.searchBusinesses(byTerm: "restaurants",
-                                    location: zipcode,
-                                    latitude: nil,
-                                    longitude: nil,
-                                    radius: 80000,
-                                    categories: nil,
-                                    locale: .english_unitedStates,
-                                    limit: 50,
-                                    offset: 0,
-                                    sortBy: .bestMatch,
-                                    priceTiers: nil,
-                                    openNow: nil,
-                                    openAt: nil,
-                                    attributes: nil) { (response) in
-            if let response = response,
-               let businesses = response.businesses {
-                self.restaurants = businesses
-                print(self.restaurants)
-                DispatchQueue.main.async {
-                    self.displayRestaurant()
-                }
-            }
-        }
-    }
+//    func loadRestaurants(_ zipcode:String) {
+//        let apiClient = CDYelpAPIClient(apiKey: YelpAPIConfig.apiKey)
+//        apiClient.searchBusinesses(byTerm: "restaurants",
+//                                    location: zipcode,
+//                                    latitude: nil,
+//                                    longitude: nil,
+//                                    radius: 80000,
+//                                    categories: nil,
+//                                    locale: .english_unitedStates,
+//                                    limit: 50,
+//                                    offset: 0,
+//                                    sortBy: .bestMatch,
+//                                    priceTiers: nil,
+//                                    openNow: nil,
+//                                    openAt: nil,
+//                                    attributes: nil) { (response) in
+//            if let response = response,
+//               let businesses = response.businesses {
+//                self.restaurants = businesses
+//                print(self.restaurants)
+//                DispatchQueue.main.async {
+//                    self.displayRestaurant()
+//                }
+//            }
+//        }
+//    }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
@@ -108,11 +108,11 @@ class HomeViewController: UIViewController, ZipCodeDelegate, CLLocationManagerDe
     }
 
     
-    func displayRestaurant() {
-        let restaurant = restaurants[currentIndex]
-        restaurantNameLabel.text = restaurant.name
-        // Load the image from the imageURL and display it in the restaurantImageView
-    }
+//    func displayRestaurant() {
+//        let restaurant = restaurants[currentIndex]
+//        restaurantNameLabel.text = restaurant.name
+//        // Load the image from the imageURL and display it in the restaurantImageView
+//    }
 
     @IBAction func likeButtonTapped(_ sender: UIButton) {
         // Add the current restaurant to the list of liked restaurants
