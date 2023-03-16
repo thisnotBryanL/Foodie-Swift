@@ -1,0 +1,3 @@
+[submodule "CDYelpFusionKit"]
+	path = CDYelpFusionKit
+	url = https://github.com/chrisdhaan/CDYelpFusionKit.git

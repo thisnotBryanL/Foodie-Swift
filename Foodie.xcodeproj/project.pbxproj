@@ -18,6 +18,8 @@
 		3F3D0AD729C2B6FC0019D081 /* FoodieUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3D0AD629C2B6FC0019D081 /* FoodieUITestsLaunchTests.swift */; };
 		3F3D0AE429C2BB320019D081 /* ZipCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3D0AE329C2BB320019D081 /* ZipCodeViewController.swift */; };
 		3F3D0AFD29C2EBA60019D081 /* YelpAPIConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3D0AFC29C2EBA60019D081 /* YelpAPIConfig.swift */; };
+		3FE7B1A729C2F8E600AE114D /* CDYelpFusionKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FED2A0829C2F8870057A412 /* CDYelpFusionKit.framework */; };
+		3FE7B1A829C2F8E600AE114D /* CDYelpFusionKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3FED2A0829C2F8870057A412 /* CDYelpFusionKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +37,34 @@
 			remoteGlobalIDString = 3F3D0AAF29C2B6F90019D081;
 			remoteInfo = Foodie;
 		};
+		3FED2A0729C2F8870057A412 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3FED29FF29C2F8870057A412 /* CDYelpFusionKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5FBF0E671EBFFEB0004C1F6B;
+			remoteInfo = "CDYelpFusionKit iOS";
+		};
+		3FED2A0929C2F8870057A412 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3FED29FF29C2F8870057A412 /* CDYelpFusionKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B285D9E81FBD34F400FA9ABB;
+			remoteInfo = "CDYelpFusionKit macOS";
+		};
+		3FED2A0B29C2F8870057A412 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3FED29FF29C2F8870057A412 /* CDYelpFusionKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B285DA291FBE1AA600FA9ABB;
+			remoteInfo = "CDYelpFusionKit tvOS";
+		};
+		3FED2A0D29C2F8870057A412 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3FED29FF29C2F8870057A412 /* CDYelpFusionKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B2C6E1E61FBCF25A00FE8462;
+			remoteInfo = "CDYelpFusionKit watchOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -44,6 +74,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				3FE7B1A829C2F8E600AE114D /* CDYelpFusionKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -66,6 +97,7 @@
 		3F3D0AD629C2B6FC0019D081 /* FoodieUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodieUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		3F3D0AE329C2BB320019D081 /* ZipCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipCodeViewController.swift; sourceTree = "<group>"; };
 		3F3D0AFC29C2EBA60019D081 /* YelpAPIConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YelpAPIConfig.swift; sourceTree = "<group>"; };
+		3FED29FF29C2F8870057A412 /* CDYelpFusionKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CDYelpFusionKit.xcodeproj; path = CDYelpFusionKit/CDYelpFusionKit.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +105,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FE7B1A729C2F8E600AE114D /* CDYelpFusionKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,6 +129,7 @@
 		3F3D0AA729C2B6F90019D081 = {
 			isa = PBXGroup;
 			children = (
+				3FED29FF29C2F8870057A412 /* CDYelpFusionKit.xcodeproj */,
 				3F3D0AB229C2B6F90019D081 /* Foodie */,
 				3F3D0AC929C2B6FC0019D081 /* FoodieTests */,
 				3F3D0AD329C2B6FC0019D081 /* FoodieUITests */,
@@ -152,6 +186,17 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3FED2A0029C2F8870057A412 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3FED2A0829C2F8870057A412 /* CDYelpFusionKit.framework */,
+				3FED2A0A29C2F8870057A412 /* CDYelpFusionKit.framework */,
+				3FED2A0C29C2F8870057A412 /* CDYelpFusionKit.framework */,
+				3FED2A0E29C2F8870057A412 /* CDYelpFusionKit.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -245,6 +290,12 @@
 			mainGroup = 3F3D0AA729C2B6F90019D081;
 			productRefGroup = 3F3D0AB129C2B6F90019D081 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 3FED2A0029C2F8870057A412 /* Products */;
+					ProjectRef = 3FED29FF29C2F8870057A412 /* CDYelpFusionKit.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				3F3D0AAF29C2B6F90019D081 /* Foodie */,
@@ -253,6 +304,37 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		3FED2A0829C2F8870057A412 /* CDYelpFusionKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CDYelpFusionKit.framework;
+			remoteRef = 3FED2A0729C2F8870057A412 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3FED2A0A29C2F8870057A412 /* CDYelpFusionKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CDYelpFusionKit.framework;
+			remoteRef = 3FED2A0929C2F8870057A412 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3FED2A0C29C2F8870057A412 /* CDYelpFusionKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CDYelpFusionKit.framework;
+			remoteRef = 3FED2A0B29C2F8870057A412 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3FED2A0E29C2F8870057A412 /* CDYelpFusionKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CDYelpFusionKit.framework;
+			remoteRef = 3FED2A0D29C2F8870057A412 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		3F3D0AAE29C2B6F90019D081 /* Resources */ = {
