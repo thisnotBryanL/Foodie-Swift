@@ -25,7 +25,10 @@ class HomeViewController: UIViewController, ZipCodeDelegate, CLLocationManagerDe
 
     
     private var restaurants: [CDYelpBusiness.BusinessSearch] = []
-    private var likedRestaurants: [CDYelpBusiness.BusinessSearch] = []
+    private var likedRestaurants: [YelpRestaurant] = []
+    
+    private var resultRestaurant: [YelpRestaurant] = []
+    
     private var currentIndex = 0
     private var currentZip = "0"
     
@@ -40,10 +43,6 @@ class HomeViewController: UIViewController, ZipCodeDelegate, CLLocationManagerDe
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.startUpdatingLocation()
-        
-        
-        title = "Home"
-        view.backgroundColor = UIColor.systemBackground
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -92,7 +91,6 @@ class HomeViewController: UIViewController, ZipCodeDelegate, CLLocationManagerDe
     func reverseGeocode(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
         let location = CLLocation(latitude: latitude, longitude: longitude)
         let geocoder = CLGeocoder()
-        print("Heeeer")
         geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
             if let error = error {
                 print("Reverse geocode error: \(error.localizedDescription)")
@@ -102,18 +100,13 @@ class HomeViewController: UIViewController, ZipCodeDelegate, CLLocationManagerDe
             if let placemark = placemarks?.first, let postalCode = placemark.postalCode {
                 self.currentZip = postalCode
                 self.loadRestaurants(postalCode)
-
             }
-        }
-        if let initialZipCode = UserDefaults.standard.string(forKey: "initialZipCode") {
-            print("Initial zip code: \(initialZipCode)")
         }
     }
 
     
     func displayRestaurant() {
         let restaurant = restaurants[currentIndex]
-        print(restaurant)
         restaurantNameLabel.text = restaurant.name
         if let foodTypeStr = restaurant.categories?[0].title{
             foodTypeLabel.text = "Food Type: " + foodTypeStr
@@ -123,39 +116,43 @@ class HomeViewController: UIViewController, ZipCodeDelegate, CLLocationManagerDe
             let imgURL = URL(string: imgStr)
             if let unwrappedImgURL = imgURL{
                 let session = URLSession(configuration: .default)
-                let downloadPicTask = session.dataTask(with: unwrappedImgURL) { (data, response, error) in
+                
+                // Download image from the URL given by API
+                let downloadImageTask = session.dataTask(with: unwrappedImgURL) { (data, response, error) in
                     // The download has finished.
                     if let e = error {
-                        print("Error downloading cat picture: \(e)")
+                        print("Error downloading restaurant image: \(e)")
                     } else {
                         // No errors found.
-                        // It would be weird if we didn't have a response, so check for that too.
-                        if let res = response as? HTTPURLResponse {
-                            print("Downloaded cat picture with response code \(res.statusCode)")
-                            if let imageData = data {
-                                // Finally convert that Data into an image and do what you wish with it.
-                                // Do something with your image.
-                                DispatchQueue.main.async {
-                                    let image = UIImage(data: imageData)
-                                    self.restaurantImageView.image = image
-                                }
-                            } else {
-                                print("Couldn't get image: Image is nil")
+                        if let imageData = data {
+                            // Convert that Data into an image
+                            DispatchQueue.main.async {
+                                let image = UIImage(data: imageData)
+                                
+                                //Display image
+                                self.restaurantImageView.image = image
+                                
+                                // Add image to wrapper class that will hold YelpBusiness object and Image of business
+                                let restaurantWithImage = YelpRestaurant(business: restaurant, image: image)
+                                self.resultRestaurant.append(restaurantWithImage)
                             }
                         } else {
-                            print("Couldn't get response code for some reason")
+                            // Still add wrapper class to result restaurant array bc this is the main array used
+                            print("Couldn't get image: Image is nil")
+                            let restaurantNoImage = YelpRestaurant(business: restaurant)
+                            self.resultRestaurant.append(restaurantNoImage)
                         }
                     }
                 }
                 
-                downloadPicTask.resume()
+                downloadImageTask.resume()
             }
         }
     }
 
     @IBAction func likeButtonTapped(_ sender: UIButton) {
         // Add the current restaurant to the list of liked restaurants
-        likedRestaurants.append(restaurants[currentIndex])
+        likedRestaurants.append(resultRestaurant[currentIndex])
         
         // Increment currentIndex and display the next restaurant
         currentIndex = currentIndex + 1
@@ -181,17 +178,20 @@ class HomeViewController: UIViewController, ZipCodeDelegate, CLLocationManagerDe
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//           if segue.identifier == "showMyLikes" {
-//               let myLikesVC = segue.destination as! MyLikesViewController
-//               myLikesVC.likedRestaurants = likedRestaurants
-//           } else
-        if segue.identifier == "showZipCode" {
+           if segue.identifier == "showMyLikes" {
+               let myLikesVC = segue.destination as! MyLikesViewController
+               myLikesVC.likedRestaurants = self.likedRestaurants
+           }else if segue.identifier == "showZipCode" {
                let zipCodeVC = segue.destination as! ZipCodeViewController
-               zipCodeVC.delegate = self
+               zipCodeVC.delegate = self}
+        else if segue.identifier == "showNearest"{
+            let closestVC = segue.destination as! ClosestRestaurantsViewController
+            closestVC.closestRestaurants = self.restaurants.sorted {(a,b) -> Bool in
+                return a.distance! < b.distance!}
 //           } else if segue.identifier == "showMoreDetails" {
 //               let moreDetailsVC = segue.destination as! MoreDetailsViewController
 //               moreDetailsVC.restaurant = currentRestaurant
-           } // Add more cases for other segues if needed
+           }
        }
     
     
