@@ -23,6 +23,8 @@
 		3FE7B21329C418B100AE114D /* MyLikesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE7B21229C418B100AE114D /* MyLikesViewController.swift */; };
 		3FE7B21729C41ED900AE114D /* YelpRestaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE7B21629C41ED900AE114D /* YelpRestaurant.swift */; };
 		3FE7B21929C426BB00AE114D /* ClosestRestaurantsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE7B21829C426BB00AE114D /* ClosestRestaurantsViewController.swift */; };
+		3FE7B21B29C43B0900AE114D /* MoreDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE7B21A29C43B0900AE114D /* MoreDetailsViewController.swift */; };
+		3FE7B22129C4535800AE114D /* ReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE7B22029C4535800AE114D /* ReviewsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,6 +105,8 @@
 		3FE7B21229C418B100AE114D /* MyLikesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLikesViewController.swift; sourceTree = "<group>"; };
 		3FE7B21629C41ED900AE114D /* YelpRestaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YelpRestaurant.swift; sourceTree = "<group>"; };
 		3FE7B21829C426BB00AE114D /* ClosestRestaurantsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosestRestaurantsViewController.swift; sourceTree = "<group>"; };
+		3FE7B21A29C43B0900AE114D /* MoreDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreDetailsViewController.swift; sourceTree = "<group>"; };
+		3FE7B22029C4535800AE114D /* ReviewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewsViewController.swift; sourceTree = "<group>"; };
 		3FED29FF29C2F8870057A412 /* CDYelpFusionKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CDYelpFusionKit.xcodeproj; path = CDYelpFusionKit/CDYelpFusionKit.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -169,6 +173,8 @@
 				3F3D0AE329C2BB320019D081 /* ZipCodeViewController.swift */,
 				3F3D0AFC29C2EBA60019D081 /* YelpAPIConfig.swift */,
 				3FE7B21629C41ED900AE114D /* YelpRestaurant.swift */,
+				3FE7B21A29C43B0900AE114D /* MoreDetailsViewController.swift */,
+				3FE7B22029C4535800AE114D /* ReviewsViewController.swift */,
 			);
 			path = Foodie;
 			sourceTree = "<group>";
@@ -377,11 +383,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FE7B21B29C43B0900AE114D /* MoreDetailsViewController.swift in Sources */,
 				3F3D0AB829C2B6FA0019D081 /* HomeViewController.swift in Sources */,
 				3FE7B21929C426BB00AE114D /* ClosestRestaurantsViewController.swift in Sources */,
 				3F3D0AB429C2B6F90019D081 /* AppDelegate.swift in Sources */,
 				3F3D0AB629C2B6F90019D081 /* SceneDelegate.swift in Sources */,
 				3F3D0AE429C2BB320019D081 /* ZipCodeViewController.swift in Sources */,
+				3FE7B22129C4535800AE114D /* ReviewsViewController.swift in Sources */,
 				3FE7B21729C41ED900AE114D /* YelpRestaurant.swift in Sources */,
 				3F3D0AFD29C2EBA60019D081 /* YelpAPIConfig.swift in Sources */,
 				3FE7B21329C418B100AE114D /* MyLikesViewController.swift in Sources */,

@@ -178,21 +178,26 @@ class HomeViewController: UIViewController, ZipCodeDelegate, CLLocationManagerDe
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-           if segue.identifier == "showMyLikes" {
-               let myLikesVC = segue.destination as! MyLikesViewController
-               myLikesVC.likedRestaurants = self.likedRestaurants
-           }else if segue.identifier == "showZipCode" {
-               let zipCodeVC = segue.destination as! ZipCodeViewController
-               zipCodeVC.delegate = self}
-        else if segue.identifier == "showNearest"{
-            let closestVC = segue.destination as! ClosestRestaurantsViewController
-            closestVC.closestRestaurants = self.restaurants.sorted {(a,b) -> Bool in
-                return a.distance! < b.distance!}
-//           } else if segue.identifier == "showMoreDetails" {
-//               let moreDetailsVC = segue.destination as! MoreDetailsViewController
-//               moreDetailsVC.restaurant = currentRestaurant
+       if segue.identifier == "showMyLikes" {
+           let myLikesVC = segue.destination as! MyLikesViewController
+           myLikesVC.likedRestaurants = self.likedRestaurants
+           
+       }else if segue.identifier == "showZipCode" {
+           let zipCodeVC = segue.destination as! ZipCodeViewController
+           zipCodeVC.delegate = self
+           
+       }else if segue.identifier == "showNearest"{
+           let closestVC = segue.destination as! ClosestRestaurantsViewController
+           closestVC.closestRestaurants = self.restaurants.sorted {(a,b) -> Bool in
+               return a.distance! < b.distance!}
+           
+       }else if segue.identifier == "showMoreDetails" {
+           if restaurantNameLabel.text != "Loading..." {
+               let moreDetailsVC = segue.destination as! MoreDetailsViewController
+               moreDetailsVC.restaurant = resultRestaurant[currentIndex]
            }
        }
+    }
     
     
 }
