@@ -27,7 +27,6 @@ class ReviewsViewController: UITableViewController {
             if let response = response,
                let fetchedReviews = response.reviews {
                 self.reviews = fetchedReviews
-                print(self.reviews)
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
