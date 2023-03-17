@@ -11,6 +11,7 @@ import CDYelpFusionKit
 class ClosestRestaurantsViewController: UITableViewController {
 
     var closestRestaurants: [CDYelpBusiness.BusinessSearch] = []
+    var selectedRestaurant: CDYelpBusiness.BusinessSearch?
 
 
 
@@ -23,6 +24,20 @@ class ClosestRestaurantsViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return closestRestaurants.count
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedRestaurant = closestRestaurants[indexPath.row]
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let moreDetailsVC = storyboard.instantiateViewController(withIdentifier: "MoreDetailsViewController") as? MoreDetailsViewController {
+            if let selectedRestaurantUnwrap = selectedRestaurant{
+                let yelpRestaurantWrap = YelpRestaurant(business: selectedRestaurantUnwrap)
+                moreDetailsVC.restaurant = yelpRestaurantWrap
+                navigationController?.pushViewController(moreDetailsVC, animated: true)
+            }
+        }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
