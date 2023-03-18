@@ -15,7 +15,7 @@ class ReviewsViewController: UITableViewController {
     var restaurant: YelpRestaurant?
     let apiClient = CDYelpAPIClient(apiKey: YelpAPIConfig.apiKey)
     var selectedReview: CDYelpReview?
-    var imgStr = ""
+    var imgStrArr : [String] = []
     override func viewDidLoad() {
         super.viewDidLoad()
         loadReviews()
@@ -52,7 +52,7 @@ class ReviewsViewController: UITableViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let reviewDetailsVC = storyboard.instantiateViewController(withIdentifier: "ReviewDetailsViewController") as? ReviewDetailsViewController {
             reviewDetailsVC.review = selectedReview
-            reviewDetailsVC.ratingImage = UIImage(named: imgStr)
+            reviewDetailsVC.ratingImage = UIImage(named: imgStrArr[indexPath.row])
 
             navigationController?.pushViewController(reviewDetailsVC, animated: true)
         }
@@ -70,8 +70,9 @@ class ReviewsViewController: UITableViewController {
         
         
         if let firstNumStr = firstNumSpelledOut{
-            imgStr = "yelp_stars_" + firstNumStr + "_small"
+            let imgStr = "yelp_stars_" + firstNumStr + "_small"
             cell.imageView?.image = UIImage(named: imgStr)
+            imgStrArr.append(imgStr)
         }
         return cell
     }

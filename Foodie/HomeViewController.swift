@@ -9,35 +9,46 @@ import UIKit
 import CoreLocation
 import CDYelpFusionKit
 
+/*
+    HomeViewController
+        This View controller is the entrypoint and handles the main homepage for the app.
+ */
 class HomeViewController: UIViewController, ZipCodeDelegate, CLLocationManagerDelegate {
 
     @IBOutlet weak var restaurantImageView: UIImageView!
     @IBOutlet weak var restaurantNameLabel: UILabel!
     @IBOutlet weak var foodTypeLabel : UILabel!
-    
     @IBOutlet weak var zipCodeButton: UIButton!
     @IBOutlet weak var nearestRestaurantButton: UIButton!
     @IBOutlet weak var myLikes: UIButton!
     @IBOutlet weak var dislikeButton: UIButton!
     @IBOutlet weak var likeButton: UIButton!
     
+    // Used to handle Core Location and getting users current location
     let locationManager = CLLocationManager()
 
     
+    // Array used to store response objects from Yelp API
     private var restaurants: [CDYelpBusiness.BusinessSearch] = []
-    private var likedRestaurants: [YelpRestaurant] = []
     
+    // Arrays used to store custom Yelp Wrapper objects
+    private var likedRestaurants: [YelpRestaurant] = []
     private var resultRestaurant: [YelpRestaurant] = []
     
+    // Used to save current restaurant position in restaurant array
     private var currentIndex = 0
+    
     private var currentZip = "0"
     
+    // Yelp Wrapper api client from CDYelpFusion repo
     let apiClient = CDYelpAPIClient(apiKey: YelpAPIConfig.apiKey)
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Core Location authorization request, configurations, and retrieving location
         locationManager.requestAlwaysAuthorization()
         locationManager.requestWhenInUseAuthorization()
         locationManager.delegate = self
@@ -47,12 +58,10 @@ class HomeViewController: UIViewController, ZipCodeDelegate, CLLocationManagerDe
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
-
     }
     
+    // Function that handles API call to YelpFusion API
     func loadRestaurants(_ zipcode:String) {
-       
         apiClient.searchBusinesses(byTerm: "Food",
                                     location: zipcode,
                                     latitude: nil,
@@ -77,17 +86,20 @@ class HomeViewController: UIViewController, ZipCodeDelegate, CLLocationManagerDe
         }
     }
     
+    // Function that gets users current location
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
             manager.stopUpdatingLocation()
             let latitude = location.coordinate.latitude
             let longitude = location.coordinate.longitude
+            
             // Reverse geocode to get the zip code
             reverseGeocode(latitude: latitude, longitude: longitude)
         }
     }
 
     
+    // Retrieves users Zip code
     func reverseGeocode(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
         let location = CLLocation(latitude: latitude, longitude: longitude)
         let geocoder = CLGeocoder()
@@ -97,6 +109,7 @@ class HomeViewController: UIViewController, ZipCodeDelegate, CLLocationManagerDe
                 return
             }
 
+            // If location is found get that Zip code
             if let placemark = placemarks?.first, let postalCode = placemark.postalCode {
                 self.currentZip = postalCode
                 self.loadRestaurants(postalCode)
@@ -104,7 +117,7 @@ class HomeViewController: UIViewController, ZipCodeDelegate, CLLocationManagerDe
         }
     }
 
-    
+    // Function to display current restaurant based off of what currentIndex it is on
     func displayRestaurant() {
         let restaurant = restaurants[currentIndex]
         restaurantNameLabel.text = restaurant.name
@@ -144,7 +157,6 @@ class HomeViewController: UIViewController, ZipCodeDelegate, CLLocationManagerDe
                         }
                     }
                 }
-                
                 downloadImageTask.resume()
             }
         }
@@ -156,14 +168,12 @@ class HomeViewController: UIViewController, ZipCodeDelegate, CLLocationManagerDe
         
         // Increment currentIndex and display the next restaurant
         currentIndex = currentIndex + 1
-        
         displayRestaurant()
     }
     
     @IBAction func dislikeButtonTapped(_ sender: UIButton) {
         // Increment currentIndex and display the next restaurant
         currentIndex = currentIndex + 1
-        
         displayRestaurant()
     }
     
@@ -177,6 +187,7 @@ class HomeViewController: UIViewController, ZipCodeDelegate, CLLocationManagerDe
         loadRestaurants(zipCode)
     }
     
+    // Function used to pass Restaurant data to various ViewControllers through segues
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
        if segue.identifier == "showMyLikes" {
            let myLikesVC = segue.destination as! MyLikesViewController
@@ -192,6 +203,7 @@ class HomeViewController: UIViewController, ZipCodeDelegate, CLLocationManagerDe
                return a.distance! < b.distance!}
            
        }else if segue.identifier == "showMoreDetails" {
+           // Makes sure the restaurant is done loading before getting more details
            if restaurantNameLabel.text != "Loading..." {
                let moreDetailsVC = segue.destination as! MoreDetailsViewController
                moreDetailsVC.restaurant = resultRestaurant[currentIndex]

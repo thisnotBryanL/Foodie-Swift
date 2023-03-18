@@ -27,6 +27,8 @@ class MoreDetailsViewController: UIViewController {
 
     func displayRestaurantDetails() {
         if let restaurantDetails = restaurant?.business{
+            
+            // Used to parse rating number from Yelp API response and turn it into a image path
             let formatter = NumberFormatter()
             formatter.numberStyle = .spellOut
             let ratingText = String(format: "%.1f", restaurantDetails.rating!)
@@ -39,7 +41,8 @@ class MoreDetailsViewController: UIViewController {
             }else{
                 secondNumStr = "half_"
             }
-
+            
+            
             if let firstNumStr = firstNumSpelledOut{
                 let imgStr = "yelp_stars_" + firstNumStr + "_" + secondNumStr + "small"
                 ratingImageView.image = UIImage(named: imgStr)
